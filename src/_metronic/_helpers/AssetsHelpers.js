@@ -7,4 +7,8 @@ export function addCSSClass(ele, cls) {
     ele.classList.add(cls);
 }
 
-export const toAbsoluteUrl = pathname => process.env.PUBLIC_URL + pathname;
+export const toAbsoluteUrl = (pathname) => {
+    // console.log("Pathname is - ");
+    // console.log(pathname);
+    return process.env.PUBLIC_URL + pathname;
+}

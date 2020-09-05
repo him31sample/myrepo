@@ -17,7 +17,7 @@ const initialAuthState = {
 };
 
 export const reducer = persistReducer(
-  { storage, key: "v-706-demo2-auth", whitelist: ["username", "access"] },
+  { storage, key: "v-706-demo2-auth", whitelist: ["user", "authToken"] },
   (state = initialAuthState, action) => {
     switch (action.type) {
       case actionTypes.Login: {
@@ -36,13 +36,15 @@ export const reducer = persistReducer(
       }
 
       case actionTypes.UserLoaded: {
+        // console.log("User Loaded Action");
+        // console.log(action.payload);
         const { user } = action.payload;
         return { ...state, user };
       }
 
       default:
-        console.log("Defalt State")
-        console.log(state)
+        // console.log("Defalt State")
+        // console.log(state)
         return state;
     }
   }
@@ -58,15 +60,18 @@ export const actions = {
 
 export function* saga() {
   yield takeLatest(actionTypes.Login, function* loginSaga() {
+    console.log("Saga Login User");
     yield put(actions.requestUser());
   });
 
   yield takeLatest(actionTypes.Register, function* registerSaga() {
+    console.log("Saga Register User");
     yield put(actions.requestUser());
   });
 
   yield takeLatest(actionTypes.UserRequested, function* userRequested() {
     const { data: user } = yield getUserByToken();
+    console.log("Saga User Requested - ", user);
     yield put(actions.fulfillUser(user));
   });
 }

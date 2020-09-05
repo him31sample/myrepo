@@ -1,22 +1,29 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useParams, useLocation} from "react-router-dom";
 import * as Yup from "yup";
 import { injectIntl } from "react-intl";
 import * as auth from "../_redux/authRedux";
-import { resetPassword } from "../_redux/authCrud";
+import { resetPasswordConfirm } from "../_redux/authCrud";
+import queryString from 'query-string';
 
 const initialValues = {
-  email: "",
+  uid:"",
+  token:"",
+  new_password: "",
+  confirm_new_password: "",
 };
 
-function ForgotPassword(props) {
+function ResetPassword(props) {
   const { intl } = props;
   const [isRequested, setIsRequested] = useState(false);
-  const ForgotPasswordSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Wrong email format")
+  initialValues.uid = useParams().uid;
+  initialValues.token = useParams().token;
+
+
+  const ResetPasswordSchema = Yup.object().shape({
+    new_password: Yup.string()
       .min(3, "Minimum 3 symbols")
       .max(50, "Maximum 50 symbols")
       .required(
@@ -24,7 +31,21 @@ function ForgotPassword(props) {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
+    confirm_new_password: Yup.string()
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      )
+      .when("new_password", {
+        is: (val) => (val && val.length > 0 ? true : false),
+        then: Yup.string().oneOf(
+          [Yup.ref("new_password")],
+          "new_password and Confirm new_password didn't match"
+        ),
+      }),
   });
+
 
   const getInputClasses = (fieldname) => {
     if (formik.touched[fieldname] && formik.errors[fieldname]) {
@@ -34,17 +55,19 @@ function ForgotPassword(props) {
     if (formik.touched[fieldname] && !formik.errors[fieldname]) {
       return "is-valid";
     }
-
     return "";
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema: ForgotPasswordSchema,
-    onSubmit: (values, { setStatus, setSubmitting }) => {
-      resetPassword(values.email)
-        .then(() => setIsRequested(true))
-        .catch(() => {
+    validationSchema: ResetPasswordSchema,
+    onSubmit: (values, { setStatus, setFieldError, setSubmitting }) => {
+      resetPasswordConfirm(values.uid, values.token, values.new_password)
+        .then(() => {
+          setIsRequested(true);
+          console.log(values);
+        })
+        .catch((error) => {
           setIsRequested(false);
           setSubmitting(false);
           setStatus(
@@ -53,6 +76,11 @@ function ForgotPassword(props) {
               { name: values.email }
             )
           );
+          if (error.response.data) {
+            setStatus(error.response.data.detail);
+            setFieldError('new_password', error.response.data.new_password);
+            setFieldError('confirm_new_password', error.response.data.confirm_new_password);
+          }
         });
     },
   });
@@ -63,9 +91,9 @@ function ForgotPassword(props) {
       {!isRequested && (
         <div className="login-form login-forgot" style={{ display: "block" }}>
           <div className="text-center mb-10 mb-lg-20">
-            <h3 className="font-size-h1">Forgotten Password ?</h3>
+            <h3 className="font-size-h1">Reset Password ?</h3>
             <div className="text-muted font-weight-bold">
-              Enter your email to reset your password
+              Enter new password for your account
             </div>
           </div>
           <form
@@ -81,19 +109,37 @@ function ForgotPassword(props) {
             )}
             <div className="form-group fv-plugins-icon-container">
               <input
-                type="email"
+                type="password"
+                placeholder="New Password"
                 className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-                  "email"
+                  "new_password"
                 )}`}
-                name="email"
-                {...formik.getFieldProps("email")}
+                name="new_password"
+                {...formik.getFieldProps("new_password")}
               />
-              {formik.touched.email && formik.errors.email ? (
+              {formik.touched.new_password && formik.errors.new_password ? (
                 <div className="fv-plugins-message-container">
-                  <div className="fv-help-block">{formik.errors.email}</div>
+                  <div className="fv-help-block">{formik.errors.new_password}</div>
                 </div>
               ) : null}
             </div>
+            <div className="form-group fv-plugins-icon-container">
+              <input
+                type="password"
+                placeholder="Confirm New Password"
+                className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
+                  "confirm_new_password"
+                )}`}
+                name="confirm_new_password"
+                {...formik.getFieldProps("confirm_new_password")}
+              />
+              {formik.touched.confirm_new_password && formik.errors.confirm_new_password ? (
+                <div className="fv-plugins-message-container">
+                  <div className="fv-help-block">{formik.errors.confirm_new_password}</div>
+                </div>
+              ) : null}
+            </div>
+            
             <div className="form-group d-flex flex-wrap flex-center">
               <button
                 id="kt_login_forgot_submit"
@@ -120,4 +166,4 @@ function ForgotPassword(props) {
   );
 }
 
-export default injectIntl(connect(null, auth.actions)(ForgotPassword));
+export default injectIntl(connect(null, auth.actions)(ResetPassword));

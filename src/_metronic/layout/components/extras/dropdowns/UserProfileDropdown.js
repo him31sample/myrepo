@@ -85,13 +85,15 @@ export function UserProfileDropdown() {
                   <i className="flaticon2-calendar-3 text-success"/>
                 </div>
                 <div className="navi-text">
-                  <div className="font-weight-bold">
-                    My Profile
-                  </div>
-                  <div className="text-muted">
-                    Account settings and more{` `}
-                    <span className="label label-light-danger label-inline font-weight-bold">update</span>
-                  </div>
+                  <Link to="/account/profile">
+                    <div className="font-weight-bold">
+                      My Profile
+                    </div>
+                    <div className="text-muted">
+                      Account settings and more{` `}
+                      <span className="label label-light-danger label-inline font-weight-bold">update</span>
+                    </div>
+                  </Link>
                 </div>
               </div>
             </a>

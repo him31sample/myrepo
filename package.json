@@ -2,10 +2,13 @@
     "name": "demo2",
     "version": "7.0.8",
     "private": true,
-    "homepage": "/metronic/react/demo2",
+    "homepage": "",
+    
     "scripts": {
         "start": "react-scripts start -o",
         "build": "react-scripts build",
+        "deploy": "aws s3 sync build/ s3://planetmanthan-react --acl public-read",
+        "serve": "cp-cli build _site/ && serve",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint src",

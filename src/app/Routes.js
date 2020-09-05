@@ -32,8 +32,10 @@ export function Routes() {
             <Route path="/logout" component={Logout}/>
             <Route path="/activate" component={Logout}/>
             <Layout>
-                    <BasePage/>
+                <BasePage/>
             </Layout>
+
+
         </Switch>
     );
 }

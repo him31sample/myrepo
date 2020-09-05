@@ -83,8 +83,6 @@ function Login(props) {
                 id: "AUTH.VALIDATION.INVALID_LOGIN",
               })
             );
-            console.log("Error Response")
-            console.log(error.response)
             if (error.response.data) {
               setStatus(error.response.data.detail);
               setFieldError('email', error.response.data.email);
