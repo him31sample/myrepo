@@ -29,7 +29,7 @@ export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
-console.log("Store state");
+console.log("Store.js Store state");
 console.log(store.getState());
 
 export default store;

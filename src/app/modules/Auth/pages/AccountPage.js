@@ -11,21 +11,13 @@ export default function AccountPage() {
     }),
     shallowEqual
   );
-  console.log("Authroization Status for Account")
-  console.log(isAuthorized)
   if (!isAuthorized) {
     return <Redirect to="/auth/login" />
   } else {
     return (
       <Suspense fallback={<LayoutSplashScreen />}>
         <Switch>
-          {
-            <Redirect
-              exact={true}
-              from="/account"
-              to="/account/profile"
-            />
-          }
+          <Redirect exact={true} from="/account" to="/account/profile"/>
           <ContentRoute path="/account/profile" component={AccountProfile} />
           <ContentRoute path="/account/profile/edit" component={AccountProfile} />
           <ContentRoute path="/account/verify-email" component={AccountProfile} />

@@ -11,6 +11,7 @@ import { Redirect, Switch } from "react-router-dom";
 import { LayoutSplashScreen, ContentRoute } from "../../../../_metronic/layout";
 import AccountProfileEdit from "./AccountProfileEdit"
 
+
 export default function AccountProfile() {
 
   const { user } = useSelector(
@@ -19,6 +20,8 @@ export default function AccountProfile() {
     }),
     shallowEqual
   );
+  console.log("Account Profile")
+  console.log(user)
   return (
     <Tab.Container id="id-account-profile" defaultActiveKey="first">
       <Row>
@@ -56,11 +59,12 @@ export default function AccountProfile() {
             <CardBody>
                 <Tab.Content>
                   <Tab.Pane eventKey="first">
-                      <h2 class="text-primary">General Information</h2>
-                      <p class="border-bottom"></p>
+                      <h2 className="text-primary">General Information</h2>
+                      <p className="border-bottom"></p>
                       <p> 
                         firts tab 
                       </p>
+                      <AccountProfileEdit  user={user} />
     
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
