@@ -28,7 +28,7 @@ export function KundalisFetchDialog({ show, onHide }) {
   // Kundalis Redux state
   const { Kundalis } = useSelector(
     (state) => ({
-      Kundalis: selectedKundalis(state.Kundalis.entities, kundalisUIProps.ids),
+      Kundalis: selectedKundalis(state.entities, kundalisUIProps.ids),
     }),
     shallowEqual
   );

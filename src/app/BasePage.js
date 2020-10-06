@@ -3,10 +3,12 @@ import {Redirect, Switch, Route} from "react-router-dom";
 import {LayoutSplashScreen, ContentRoute} from "../_metronic/layout";
 import {BuilderPage} from "./pages/BuilderPage";
 import {LandingPage} from "./pages/LandingPage";
+import {KundalisPage} from "./modules/Astrology/pages/kundalis/KundalisPage";
 // import {AccountPage} from "./pages/AccountPage";
 import AccountPage from "./modules/Auth/pages/AccountPage";
 import {MyPage} from "./pages/MyPage";
 import {DashboardPage} from "./pages/DashboardPage";
+import { KundalisCard } from "./modules/Astrology/pages/kundalis/KundalisCard";
 
 const GoogleMaterialPage = lazy(() =>
   import("./modules/GoogleMaterialExamples/GoogleMaterialPage")
@@ -39,6 +41,8 @@ export default function BasePage() {
                 <ContentRoute path="/builder" component={BuilderPage}/>
                 <ContentRoute path="/my-page" component={MyPage}/>
                 <ContentRoute path="/account" component={AccountPage}/>
+                <Route path="/kundali" component={KundalisPage}/>
+
                 <Route path="/google-material" component={GoogleMaterialPage}/>
                 <Route path="/react-bootstrap" component={ReactBootstrapPage}/>
                 <Route path="/e-commerce" component={ECommercePage}/>
