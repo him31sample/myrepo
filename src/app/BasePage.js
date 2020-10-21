@@ -10,6 +10,7 @@ import {MyPage} from "./pages/MyPage";
 import {DashboardPage} from "./pages/DashboardPage";
 import { KundalisCard } from "./modules/Astrology/pages/kundalis/KundalisCard";
 
+import Main from "./modules/Auth/imageupload/Main";
 const GoogleMaterialPage = lazy(() =>
   import("./modules/GoogleMaterialExamples/GoogleMaterialPage")
 );
@@ -42,7 +43,7 @@ export default function BasePage() {
                 <ContentRoute path="/my-page" component={MyPage}/>
                 <ContentRoute path="/account" component={AccountPage}/>
                 <Route path="/kundali" component={KundalisPage}/>
-
+                <ContentRoute path="/image" component={Main}/>
                 <Route path="/google-material" component={GoogleMaterialPage}/>
                 <Route path="/react-bootstrap" component={ReactBootstrapPage}/>
                 <Route path="/e-commerce" component={ECommercePage}/>
