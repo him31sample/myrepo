@@ -53,7 +53,7 @@ class Main extends PureComponent {
         
       const data= new FormData();
       data.append('file',this.state.selectedFile);
-      axios.post("http://localhost:8000/upload",data,{
+      axios.post("https://8000-d621a1fe-df08-4c64-bc63-8f6326479e66.ws-us02.gitpod.io/upload",data,{
     
       })
     .then(res=>{
